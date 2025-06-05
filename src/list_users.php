@@ -48,7 +48,7 @@
                 echo "<td>";
                 echo "<a href=''><img src= 'icons/edit/curriculum.png' width='40'></a>";
                 echo "<a href=''><img src= 'icons/edit/images (1).png' width='40'></a>";
-                echo "<a href='http://127.0.0.1/schoolar/src/delete.php'><img src= 'icons/edit/2622200.png' width='40'></a>";
+                echo "<a href=''><img src= 'icons/edit/2622200.png' width='40'></a>";
                 echo "</td>";
                 echo "</tr>";
             }
