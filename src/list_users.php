@@ -1,3 +1,12 @@
+<?php
+session_start();
+include('../config/database.php');
+if (!isset($_SESSION['user_id'])) {
+    header('Location: http://localhost/schoolar2/src/login.html');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +43,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -46,7 +55,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -337,9 +346,17 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php
+                                    if (isset($_SESSION['firstname']) && isset($_SESSION['lastname'])) {
+                                        echo htmlspecialchars($_SESSION['firstname']) . ' ' . htmlspecialchars($_SESSION['lastname']);
+                                    } else {
+                                        echo 'Usuario';
+                                    }
+                                    ?>
+                                </span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="<?php echo isset($_SESSION['photo']) ? htmlspecialchars($_SESSION['photo']) : 'img/default.png'; ?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -423,7 +440,7 @@
                 echo "<td>";
                 echo "<a href=''><img src= 'icons/edit/curriculum.png' width='40'></a>";
                 echo "<a href=''><img src= 'icons/edit/images (1).png' width='40'></a>";
-                echo "<a href='http://127.0.0.1/schoolar/src/delete.php'><img src= 'icons/edit/2622200.png' width='40'></a>";
+                echo "<a href=''><img src= 'icons/edit/2622200.png' width='40'></a>";
                 echo "</td>";
                 echo "</tr>";
             }

@@ -1,37 +1,58 @@
 <?php
+include('../../config/database.php');
 
-    include('../../config/database.php');
 
-    session_start();
-    if(!isset($_SESSION['user_id'])) {
-        header('Refresh:0; url=http://localhost/schoolar2/src/index.php');
-    }
+session_start();
+session_unset();
+session_destroy();
+session_start();
 
-    $email = $_POST ['e_mail'];
-    $passw = $_POST ['p_sswd'];
-    $enc_past = sha1($passw);
+// Si ya está autenticado, redirige 
+if(isset($_SESSION['user_id'])) {
+    header('Location: http://localhost/schoolar2/src/index.php');
+    exit();
+}
 
-    $sql = "select id,
-	COUNT(id) as total
-from 
-	users 
-where 
-	email = '$email' and 
-	password = '$enc_past' and 
-	status = true
-    GROUP BY id";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['e_mail'];
+    $passw = $_POST['p_sswd'];
+    $enc_pass = sha1($passw);
+
+    $sql = "
+        SELECT 
+            id,
+            firstname,
+            lastname,
+            COUNT(id) as total
+        FROM 
+            users
+        WHERE
+            email = '$email' and
+            password = '$enc_pass' and
+            status = true
+        GROUP BY
+            id, firstname, lastname
+    ";
 
     $res = pg_query($conn, $sql);
 
     if($res){
         $row = pg_fetch_assoc($res);
         if($row['total'] > 0){
-            //echo "Login ok";
+ 
             $_SESSION['user_id'] = $row['id'];
-            header('Refresh:0; url=http://localhost/schoolar2/src/index.php');
-        } else {
+            $_SESSION['firstname'] = $row['firstname'];
+            $_SESSION['lastname'] = $row['lastname'];
+            $_SESSION['photo'] = 'img/undraw_profile_1.svg'; 
+
+            header('Location: http://localhost/schoolar2/src/index.php');
+            exit();
+        }else{
             echo "Login failed";
         }
     }
+}
 
+
+include('login.view.php');
 ?>
