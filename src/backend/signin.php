@@ -4,7 +4,7 @@
 
     session_start();
     if(!isset($_SESSION['user_id'])) {
-        header('Refresh:0; url=http://localhost/schoolar2/src/index.html');
+        header('Refresh:0; url=http://localhost/schoolar2/src/index.php');
     }
 
     $email = $_POST ['e_mail'];
@@ -28,7 +28,7 @@ where
         if($row['total'] > 0){
             //echo "Login ok";
             $_SESSION['user_id'] = $row['id'];
-            header('Refresh:0; url=http://localhost/schoolar2/src/index.html');
+            header('Refresh:0; url=http://localhost/schoolar2/src/index.php');
         } else {
             echo "Login failed";
         }
